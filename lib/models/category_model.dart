@@ -13,16 +13,16 @@ class CategoryModel {
   });
   static List<CategoryModel> categories = [
     CategoryModel(
-      id: '1',
+      id: 'birthday',
       name: 'Birthday',
       icon: Icons.cake,
-      imageName: 'birthday.png',
+      imageName: 'birthday',
     ),
     CategoryModel(
-      id: '2',
+      id: 'sports',
       name: 'Sports',
       icon: Icons.sports_soccer,
-      imageName: 'sports.png',
+      imageName: 'sport',
     ),
   ];
 }

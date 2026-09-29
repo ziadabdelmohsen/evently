@@ -8,6 +8,7 @@ class EventModel {
   String title;
   String description;
   DateTime dateTime;
+
   EventModel({
     this.id = '',
     required this.category,
@@ -15,19 +16,23 @@ class EventModel {
     required this.description,
     required this.title,
   });
+
   EventModel.fromJson(Map<String, dynamic> json)
     : this(
-        id: json['id'],
-
+        id: json['id'] ?? '',
         category: CategoryModel.categories.firstWhere(
-          (Category) => Category.id == json['categoryId'],
+          (cat) => cat.id.toString() == json['categoryId']?.toString(),
+          orElse: () => CategoryModel.categories.first,
         ),
-        title: json['title'],
-        description: json['description'],
-        dateTime: (json['timestamp'] as Timestamp).toDate(),
+        title: json['title'] ?? '',
+        description: json['description'] ?? '',
+        dateTime: json['timestamp'] != null
+            ? (json['timestamp'] as Timestamp).toDate()
+            : DateTime.now(),
       );
+
   Map<String, dynamic> toJson() => {
-    'id': '',
+    'id': id,
     'categoryId': category.id,
     'title': title,
     'description': description,

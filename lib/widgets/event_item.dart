@@ -1,13 +1,13 @@
+// ignore_for_file: must_be_immutable
 import 'package:evently/app_theme.dart';
 import 'package:evently/models/event_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class EventItem extends StatelessWidget {
-   EventModel event;
-   EventItem( this.event);
+  EventModel event;
+  EventItem(this.event);
 
-   
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.sizeOf(context);
@@ -34,8 +34,7 @@ class EventItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
           ),
           child: Text(
-            DateFormat('dd MMM').format(event.dateTime)
-            ,
+            DateFormat('dd MMM').format(event.dateTime),
             style: textTheme.titleMedium?.copyWith(color: primaryColor),
           ),
         ),
@@ -50,6 +49,7 @@ class EventItem extends StatelessWidget {
               border: Border.all(color: AppTheme.offWhite),
               borderRadius: BorderRadius.circular(8),
             ),
+
             child: Row(
               mainAxisAlignment: .spaceBetween,
               children: [
@@ -61,6 +61,7 @@ class EventItem extends StatelessWidget {
                     style: textTheme.titleMedium?.copyWith(color: primaryColor),
                   ),
                 ),
+                SizedBox(width: 8),
                 InkWell(
                   onTap: () {},
                   child: Icon(Icons.favorite_outline, color: primaryColor),

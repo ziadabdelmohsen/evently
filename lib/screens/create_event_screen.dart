@@ -2,6 +2,7 @@ import 'package:evently/firebase_service.dart';
 import 'package:evently/models/category_model.dart';
 import 'package:evently/models/event_model.dart';
 import 'package:evently/tabs/home/tab_item.dart';
+import 'package:evently/ui_utils.dart';
 import 'package:evently/widgets/default_elevated_button.dart';
 import 'package:evently/widgets/default_text_form_field.dart';
 import 'package:flutter/material.dart';
@@ -31,167 +32,169 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     Color primaryColor = Theme.of(context).primaryColor;
     return Scaffold(
       appBar: AppBar(title: Text('add Event')),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: ClipRRect(
-              borderRadius: BorderRadiusGeometry.circular(16),
-              child: Image.asset(
-                'assets/images/sport.png',
-                height: MediaQuery.sizeOf(context).height * 0.25,
-                width: double.infinity,
-                fit: .fill,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: ClipRRect(
+                borderRadius: BorderRadiusGeometry.circular(16),
+                child: Image.asset(
+                  'assets/images/${CategoryModel.categories[tabIndex].imageName}.png',
+                  height: MediaQuery.sizeOf(context).height * 0.25,
+                  width: double.infinity,
+                  fit: .fill,
+                ),
               ),
             ),
-          ),
-          SizedBox(height: 24),
-          Padding(
-            padding: const EdgeInsets.only(left: 16),
-            child: DefaultTabController(
-              length: CategoryModel.categories.length,
-              child: TabBar(
-                // padding: EdgeInsets.symmetric(vertical: 24),
-                isScrollable: true,
-                dividerColor: Colors.transparent,
-                indicatorColor: Colors.transparent,
-                tabAlignment: .start,
-                labelPadding: EdgeInsetsDirectional.only(end: 8),
-                onTap: (index) {
-                  if (tabIndex == index) return;
-                  tabIndex = index;
-                  selectedCategory = CategoryModel.categories[tabIndex];
-                  setState(() {});
-                },
-                tabs: CategoryModel.categories
-                    .map(
-                      (category) => TabItem(
-                        label: category.name,
-                        icon: category.icon,
-                        isSelected:
-                            tabIndex ==
-                            CategoryModel.categories.indexOf(category),
-                      ),
-                    )
-                    .toList(),
+            SizedBox(height: 24),
+            Padding(
+              padding: const EdgeInsets.only(left: 16),
+              child: DefaultTabController(
+                length: CategoryModel.categories.length,
+                child: TabBar(
+                  // padding: EdgeInsets.symmetric(vertical: 24),
+                  isScrollable: true,
+                  dividerColor: Colors.transparent,
+                  indicatorColor: Colors.transparent,
+                  tabAlignment: .start,
+                  labelPadding: EdgeInsetsDirectional.only(end: 8),
+                  onTap: (index) {
+                    if (tabIndex == index) return;
+                    tabIndex = index;
+                    selectedCategory = CategoryModel.categories[tabIndex];
+                    setState(() {});
+                  },
+                  tabs: CategoryModel.categories
+                      .map(
+                        (category) => TabItem(
+                          label: category.name,
+                          icon: category.icon,
+                          isSelected:
+                              tabIndex ==
+                              CategoryModel.categories.indexOf(category),
+                        ),
+                      )
+                      .toList(),
+                ),
               ),
             ),
-          ),
-          SizedBox(height: 12),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Form(
-              key: formKey,
-              child: Column(
-                crossAxisAlignment: .start,
-                children: [
-                  Text('Title', style: textTheme.titleMedium),
-                  SizedBox(height: 8),
-                  DefaultTextFormField(
-                    hintText: 'Event Title',
-                    controller: titleController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Title can not be empty';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 12),
-                  Text('Description', style: textTheme.titleMedium),
-                  SizedBox(height: 12),
-                  DefaultTextFormField(
-                    maxLines: 5,
-                    hintText: 'Event Description',
-                    controller: descriptionController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Description can not be empty';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 16),
-                  Row(
-                    children: [
-                      SvgPicture.asset(
-                        'assets/icons/date.svg',
-                        height: 24,
-                        width: 24,
-                        fit: .scaleDown,
-                      ),
-                      SizedBox(width: 4),
-                      Text('Event Date', style: textTheme.titleMedium),
-                      Spacer(),
-                      InkWell(
-                        onTap: () async {
-                          DateTime? date = await showDatePicker(
-                            context: context,
-                            firstDate: DateTime.now(),
-                            lastDate: DateTime.now().add(Duration(days: 365)),
-                            initialDate: selectedDate,
-                            initialEntryMode: .calendarOnly,
-                          );
-                          if (date == null) return;
-                          selectedDate = date;
-                          setState(() {});
-                        },
-                        child: Text(
-                          selectedDate == null
-                              ? 'Choose date'
-                              : dateFormat.format(selectedDate!),
-                          style: textTheme.titleSmall?.copyWith(
-                            color: primaryColor,
-                            decoration: .underline,
+            SizedBox(height: 12),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Form(
+                key: formKey,
+                child: Column(
+                  crossAxisAlignment: .start,
+                  children: [
+                    Text('Title', style: textTheme.titleMedium),
+                    SizedBox(height: 8),
+                    DefaultTextFormField(
+                      hintText: 'Event Title',
+                      controller: titleController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Title can not be empty';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 12),
+                    Text('Description', style: textTheme.titleMedium),
+                    SizedBox(height: 12),
+                    DefaultTextFormField(
+                      maxLines: 5,
+                      hintText: 'Event Description',
+                      controller: descriptionController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Description can not be empty';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 16),
+                    Row(
+                      children: [
+                        SvgPicture.asset(
+                          'assets/icons/date.svg',
+                          height: 24,
+                          width: 24,
+                          fit: .scaleDown,
+                        ),
+                        SizedBox(width: 4),
+                        Text('Event Date', style: textTheme.titleMedium),
+                        Spacer(),
+                        InkWell(
+                          onTap: () async {
+                            DateTime? date = await showDatePicker(
+                              context: context,
+                              firstDate: DateTime.now(),
+                              lastDate: DateTime.now().add(Duration(days: 365)),
+                              initialDate: selectedDate,
+                              initialEntryMode: .calendarOnly,
+                            );
+                            if (date == null) return;
+                            selectedDate = date;
+                            setState(() {});
+                          },
+                          child: Text(
+                            selectedDate == null
+                                ? 'Choose date'
+                                : dateFormat.format(selectedDate!),
+                            style: textTheme.titleSmall?.copyWith(
+                              color: primaryColor,
+                              decoration: .underline,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 16),
-                  Row(
-                    children: [
-                      SvgPicture.asset(
-                        'assets/icons/time.svg',
-                        height: 24,
-                        width: 24,
-                        fit: .scaleDown,
-                      ),
-                      SizedBox(width: 4),
-                      Text('Event Time', style: textTheme.titleMedium),
-                      Spacer(),
-                      InkWell(
-                        onTap: () async {
-                          TimeOfDay? time = await showTimePicker(
-                            context: context,
-                            initialTime: selectedTime ?? TimeOfDay.now(),
-                          );
-                          if (time == null) return;
-                          selectedTime = time;
-                          setState(() {});
-                        },
-                        child: Text(
-                          selectedTime == null
-                              ? 'Choose time'
-                              : selectedTime!.format(context),
-                          style: textTheme.titleSmall?.copyWith(
-                            color: primaryColor,
-                            decoration: .underline,
+                      ],
+                    ),
+                    SizedBox(height: 16),
+                    Row(
+                      children: [
+                        SvgPicture.asset(
+                          'assets/icons/time.svg',
+                          height: 24,
+                          width: 24,
+                          fit: .scaleDown,
+                        ),
+                        SizedBox(width: 4),
+                        Text('Event Time', style: textTheme.titleMedium),
+                        Spacer(),
+                        InkWell(
+                          onTap: () async {
+                            TimeOfDay? time = await showTimePicker(
+                              context: context,
+                              initialTime: selectedTime ?? TimeOfDay.now(),
+                            );
+                            if (time == null) return;
+                            selectedTime = time;
+                            setState(() {});
+                          },
+                          child: Text(
+                            selectedTime == null
+                                ? 'Choose time'
+                                : selectedTime!.format(context),
+                            style: textTheme.titleSmall?.copyWith(
+                              color: primaryColor,
+                              decoration: .underline,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 24),
-                  DefaultElevatedButton(
-                    label: 'Add Event',
-                    onPressed: addEvent,
-                  ),
-                ],
+                      ],
+                    ),
+                    SizedBox(height: 24),
+                    DefaultElevatedButton(
+                      label: 'Add Event',
+                      onPressed: addEvent,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -214,7 +217,14 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         dateTime: dateTime,
       );
 
-      FirebaseService.createEvent(event);
+      FirebaseService.createEvent(event)
+          .then((_) {
+            Navigator.of(context).pop();
+            UIUtils.showSuccessMessage('Event created successfully');
+          })
+          .catchError((_) {
+            UIUtils.showErrorMessage('Failed to create event');
+          });
     }
   }
 }

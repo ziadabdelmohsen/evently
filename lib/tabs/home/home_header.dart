@@ -1,6 +1,8 @@
 import 'package:evently/models/category_model.dart';
+import 'package:evently/provider/events_provider.dart';
 import 'package:evently/tabs/home/tab_item.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeHeader extends StatefulWidget {
   const HomeHeader({super.key});
@@ -31,8 +33,17 @@ class _HomeHeaderState extends State<HomeHeader> {
               indicatorColor: Colors.transparent,
               tabAlignment: .start,
               labelPadding: EdgeInsetsDirectional.only(end: 8),
+              padding: EdgeInsets.symmetric(vertical: 24),
               onTap: (index) {
                 if (tabIndex == index) return;
+                tabIndex = index;
+                CategoryModel? selectedCategory = tabIndex == 0
+                    ? null
+                    : CategoryModel.categories[tabIndex - 1];
+                Provider.of<EventsProvider>(
+                  context,
+                  listen: false,
+                ).filterEvents(selectedCategory);
                 setState(() {});
               },
               tabs: [
