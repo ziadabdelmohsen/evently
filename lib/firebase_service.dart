@@ -25,4 +25,10 @@ class FirebaseService {
         .get();
     return querySnapshot.docs.map((docSnapshot) => docSnapshot.data()).toList();
   }
+
+  Future<void> register({
+    required String name,
+    required String email,
+    required String password,
+  }) async {}
 }
